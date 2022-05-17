@@ -3,26 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ShapesBalanceXamFormsApp.MainPage">
 
-
-
-
-
-
     <ContentView  InputTransparent="False"
                           IsEnabled="False"
                           Opacity="10"
                           BackgroundColor="White">
 
-
-
-
-
     </ContentView>
-
-
-
-
-
-
-
 </ContentPage>
