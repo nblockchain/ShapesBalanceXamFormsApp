@@ -28,11 +28,14 @@ namespace ShapesBalanceXamFormsApp
 
         public IEnumerable<Wallet> GetAmount()
         {
-            yield return new Wallet(400, Brush.Green);
-            yield return new Wallet(40, Brush.Blue);
-            yield return new Wallet(20, Brush.Gold);
-            yield return new Wallet(20, Brush.Olive);
-            yield return new Wallet(20, Brush.Black);
+
+            yield return new Wallet(1000, Brush.Green);
+            yield return new Wallet(50, Brush.Black);
+            yield return new Wallet(600, Brush.Blue);
+            yield return new Wallet(50, Brush.Gray);
+            yield return new Wallet(250, Brush.Brown);
+            yield return new Wallet(10, Brush.Silver);
+
         }
 
         public MainPage()
@@ -86,9 +89,6 @@ namespace ShapesBalanceXamFormsApp
             };
 
             grid.Children.Add(total_tag);
-
-
-
             makePies(grid, amounts);
             Content = grid;
 
@@ -100,24 +100,27 @@ namespace ShapesBalanceXamFormsApp
         public void makePies(Grid grid, IEnumerable<Wallet> amounts)
         {
 
-            int i; //
-            int n = amounts.Count(); //Total arcs to be drawn
+            int i; 
+            int n = amounts.Count();
             double change, hold;
             double arcAngle = 0;
             double total = 0;
-            
-            
+            double normalize = 1;
+                  
 
             
             foreach (Wallet bal in amounts)
             {
-                total += normalize(bal.CryptoValue);
+                
+                total += bal.CryptoValue;
             }
 
             for (i = 0; i < n; i++)
             {
-                hold = normalize(amounts.ElementAt(i).CryptoValue);
-                change = ( hold/ total) * 360;
+                normalize = 1;
+                hold = amounts.ElementAt(i).CryptoValue;
+                change = ( hold/ total) * 360 ;
+
                 
                 Path path = new Path { Stroke = amounts.ElementAt(i).Stroke };
                 PathGeometry geometry = new PathGeometry();
@@ -126,7 +129,18 @@ namespace ShapesBalanceXamFormsApp
                 PathSegmentCollection pathSegmentCollection = new PathSegmentCollection();
                 ArcSegment arcSegment = new ArcSegment();
 
-                arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + 5, change - 10);
+                if(change <= 10 )
+                {
+                    normalize = 0.1;
+                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + normalize , change - normalize * 2 );
+
+                }
+                else
+                {
+                    normalize = 10;
+                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + normalize, change - normalize * 2);
+
+                }
 
                 path.Data = geometry;
                 geometry.Figures = pathFigures;
@@ -135,44 +149,23 @@ namespace ShapesBalanceXamFormsApp
 
                 grid.Children.Add(path);
 
-                arcAngle = arcAngle + change;
-
-               
+                //if (change >= 10)
+                    arcAngle = arcAngle + change;
 
             }
 
-
-
-
         }
 
+ 
 
-        private double normalize(double amount)
-        {
-            do
-            {
-                if (amount > 10)
-                {
-                    amount = (amount / 10);
-                }
-                else if (1 > amount && amount > 0)
-                {
-                    amount = (amount * 10);
-                }
-
-
-            } while (amount > 10 || amount < 1);
-
-            return amount;
-        }
-        
         private ArcSegment renderArc(Path pathRoot, PathFigure pathFigure, ArcSegment ARC, double startAngle, double endAngle)
         {
             double Radius = 150;
             double angle = 0;
             bool largeArc = false;
-            //////////////////////////
-            ///
+
+            if (endAngle > 180)
+                largeArc = true;    
 
             pathRoot.StrokeLineCap = PenLineCap.Round;
             pathRoot.StrokeThickness = 12;
