@@ -29,10 +29,10 @@ namespace ShapesBalanceXamFormsApp
         public IEnumerable<Wallet> GetAmount()
         {
             yield return new Wallet(400, Brush.Green);
-            yield return new Wallet(200, Brush.Blue);
-            yield return new Wallet(200, Brush.Gold);
-            yield return new Wallet(400, Brush.Olive);
-            yield return new Wallet(600, Brush.Black);
+            yield return new Wallet(40, Brush.Blue);
+            yield return new Wallet(20, Brush.Gold);
+            yield return new Wallet(20, Brush.Olive);
+            yield return new Wallet(20, Brush.Black);
         }
 
         public MainPage()
@@ -96,33 +96,29 @@ namespace ShapesBalanceXamFormsApp
 
         }
 
+
         public void makePies(Grid grid, IEnumerable<Wallet> amounts)
         {
 
-            int i = 0; //
+            int i; //
             int n = amounts.Count(); //Total arcs to be drawn
-            int change = 0;
+            double change, hold;
             double arcAngle = 0;
             double total = 0;
+            
+            
 
+            
             foreach (Wallet bal in amounts)
             {
-                total += bal.CryptoValue;
+                total += normalize(bal.CryptoValue);
             }
-
-            
-
-            
-            
 
             for (i = 0; i < n; i++)
             {
-
-
-                change = Convert.ToInt32((amounts.ElementAt(i).CryptoValue / total) * 360);
+                hold = normalize(amounts.ElementAt(i).CryptoValue);
+                change = ( hold/ total) * 360;
                 
-
-
                 Path path = new Path { Stroke = amounts.ElementAt(i).Stroke };
                 PathGeometry geometry = new PathGeometry();
                 PathFigureCollection pathFigures = new PathFigureCollection();
@@ -149,6 +145,27 @@ namespace ShapesBalanceXamFormsApp
 
 
         }
+
+
+        private double normalize(double amount)
+        {
+            do
+            {
+                if (amount > 10)
+                {
+                    amount = (amount / 10);
+                }
+                else if (1 > amount && amount > 0)
+                {
+                    amount = (amount * 10);
+                }
+
+
+            } while (amount > 10 || amount < 1);
+
+            return amount;
+        }
+        
         private ArcSegment renderArc(Path pathRoot, PathFigure pathFigure, ArcSegment ARC, double startAngle, double endAngle)
         {
             double Radius = 150;
@@ -188,13 +205,6 @@ namespace ShapesBalanceXamFormsApp
             return new Point(x, y);
 
         }
-
-
-
-
-
-
-
 
 
     }
