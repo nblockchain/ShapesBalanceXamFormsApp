@@ -29,12 +29,12 @@ namespace ShapesBalanceXamFormsApp
         public IEnumerable<Wallet> GetAmount()
         {
 
-            yield return new Wallet(1000, Brush.Green);
-            yield return new Wallet(50, Brush.Black);
-            yield return new Wallet(600, Brush.Blue);
+            yield return new Wallet(0.1, Brush.Green);
+            yield return new Wallet(40, Brush.Black);
+            yield return new Wallet(40, Brush.Blue);
             yield return new Wallet(50, Brush.Gray);
-            yield return new Wallet(250, Brush.Brown);
-            yield return new Wallet(10, Brush.Silver);
+            yield return new Wallet(0.25, Brush.Brown);
+            yield return new Wallet(10000, Brush.Silver);
 
         }
 
@@ -89,6 +89,9 @@ namespace ShapesBalanceXamFormsApp
             };
 
             grid.Children.Add(total_tag);
+
+
+
             makePies(grid, amounts);
             Content = grid;
 
@@ -97,28 +100,62 @@ namespace ShapesBalanceXamFormsApp
         }
 
 
+        public void normalize(List<double> Ranks, IEnumerable<Wallet> amounts)
+        {
+            
+            int n = amounts.Count();
+            int rank = n;
+
+            for (int i = 0; i < n; i++)
+            {
+
+                rank = n;
+
+                foreach (Wallet bal in amounts)
+                {
+
+                    if (bal.CryptoValue > amounts.ElementAt(i).CryptoValue)
+                    {
+                        
+                        //for every value that is found to be greater
+                        //reduce the rank
+                        rank--;
+
+                    }
+
+                }
+
+                Ranks.Add(rank);
+            }
+
+        }
         public void makePies(Grid grid, IEnumerable<Wallet> amounts)
         {
 
-            int i; 
+            
             int n = amounts.Count();
             double change, hold;
             double arcAngle = 0;
             double total = 0;
-            double normalize = 1;
-                  
 
+            //manipulate the gap between the arcs
+            double gap = 3;
             
-            foreach (Wallet bal in amounts)
+            List<double> Ranks = new List<double>();
+
+            normalize(Ranks, amounts);
+
+
+            foreach (int value in Ranks)
             {
                 
-                total += bal.CryptoValue;
+                total += value;
             }
 
-            for (i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
-                normalize = 1;
-                hold = amounts.ElementAt(i).CryptoValue;
+                
+                hold = Ranks[i];
                 change = ( hold/ total) * 360 ;
 
                 
@@ -129,18 +166,11 @@ namespace ShapesBalanceXamFormsApp
                 PathSegmentCollection pathSegmentCollection = new PathSegmentCollection();
                 ArcSegment arcSegment = new ArcSegment();
 
-                if(change <= 10 )
-                {
-                    normalize = 0.1;
-                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + normalize , change - normalize * 2 );
+                
+                arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, change - gap * 2);
 
-                }
-                else
-                {
-                    normalize = 10;
-                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + normalize, change - normalize * 2);
+                
 
-                }
 
                 path.Data = geometry;
                 geometry.Figures = pathFigures;
@@ -152,7 +182,14 @@ namespace ShapesBalanceXamFormsApp
                 //if (change >= 10)
                     arcAngle = arcAngle + change;
 
+
+
+
+
             }
+
+
+
 
         }
 
@@ -198,6 +235,13 @@ namespace ShapesBalanceXamFormsApp
             return new Point(x, y);
 
         }
+
+
+
+
+
+        //while(amount.CryptoValue % 1000 = 0)
+
 
 
     }
