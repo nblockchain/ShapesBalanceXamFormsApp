@@ -29,20 +29,23 @@ namespace ShapesBalanceXamFormsApp
         public IEnumerable<Wallet> GetAmount()
         {
 
-            yield return new Wallet(0.1, Brush.Green);
-            yield return new Wallet(40, Brush.Black);
-            yield return new Wallet(40, Brush.Blue);
-            yield return new Wallet(50, Brush.Gray);
-            yield return new Wallet(0.25, Brush.Brown);
-            yield return new Wallet(10000, Brush.Silver);
 
+            yield return new Wallet(400, Brush.Green);
+            yield return new Wallet(40, Brush.Blue);
+            yield return new Wallet(20, Brush.Gold);
+            yield return new Wallet(20, Brush.Olive);
+            yield return new Wallet(20, Brush.Black);
+
+            //yield return new Wallet(50, Brush.Orange);
+            //yield return new Wallet(5, Brush.Yellow);
+            //yield return new Wallet(5, Brush.Blue);
         }
 
         public MainPage()
         {
             InitializeComponent();
-                    
-            
+
+
             IEnumerable<Wallet> amounts = GetAmount();
             double amount = 0;
 
@@ -82,7 +85,8 @@ namespace ShapesBalanceXamFormsApp
 
             Label total_tag = new Label
             {
-                Text = "Amount Balance",  FontAttributes = FontAttributes.Bold,
+                Text = "Amount Balance",
+                FontAttributes = FontAttributes.Bold,
                 FontSize = 15,
                 HorizontalOptions = LayoutOptions.Center,
                 TranslationY = 200
@@ -100,65 +104,32 @@ namespace ShapesBalanceXamFormsApp
         }
 
 
-        public void normalize(List<double> Ranks, IEnumerable<Wallet> amounts)
-        {
-            
-            int n = amounts.Count();
-            int rank = n;
 
-            for (int i = 0; i < n; i++)
-            {
-
-                rank = n;
-
-                foreach (Wallet bal in amounts)
-                {
-
-                    if (bal.CryptoValue > amounts.ElementAt(i).CryptoValue)
-                    {
-                        
-                        //for every value that is found to be greater
-                        //reduce the rank
-                        rank--;
-
-                    }
-
-                }
-
-                Ranks.Add(rank);
-            }
-
-        }
         public void makePies(Grid grid, IEnumerable<Wallet> amounts)
         {
 
-            
+
             int n = amounts.Count();
             double change, hold;
             double arcAngle = 0;
-            double total = 0;
+         
 
             //manipulate the gap between the arcs
-            double gap = 3;
-            
+            double gap = 5;
+
             List<double> Ranks = new List<double>();
 
             normalize(Ranks, amounts);
 
 
-            foreach (int value in Ranks)
-            {
-                
-                total += value;
-            }
 
             for (int i = 0; i < n; i++)
             {
-                
-                hold = Ranks[i];
-                change = ( hold/ total) * 360 ;
 
-                
+                hold = Ranks[i];
+                change = (hold / n) * 360;
+
+
                 Path path = new Path { Stroke = amounts.ElementAt(i).Stroke };
                 PathGeometry geometry = new PathGeometry();
                 PathFigureCollection pathFigures = new PathFigureCollection();
@@ -167,9 +138,19 @@ namespace ShapesBalanceXamFormsApp
                 ArcSegment arcSegment = new ArcSegment();
 
                 
-                arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, change - gap * 2);
 
-                
+                if (change > gap)
+                {
+                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, change - gap * 2);
+                    arcAngle = arcAngle + change;
+
+                }
+                else
+                {
+                    arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle - gap/2, change + gap);
+                    arcAngle = arcAngle + change;
+
+                }
 
 
                 path.Data = geometry;
@@ -179,13 +160,6 @@ namespace ShapesBalanceXamFormsApp
 
                 grid.Children.Add(path);
 
-                //if (change >= 10)
-                    arcAngle = arcAngle + change;
-
-
-
-
-
             }
 
 
@@ -193,7 +167,26 @@ namespace ShapesBalanceXamFormsApp
 
         }
 
- 
+        public void normalize(List<double> Ranks, IEnumerable<Wallet> amounts)
+        {
+
+            double n = amounts.Count();
+            double rank = n;
+            double total = 0;
+
+            foreach (Wallet bal in amounts)
+            {
+                total += bal.CryptoValue;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+
+                rank = n*(amounts.ElementAt(i).CryptoValue/total);
+                Ranks.Add(rank);
+            }
+
+        }
 
         private ArcSegment renderArc(Path pathRoot, PathFigure pathFigure, ArcSegment ARC, double startAngle, double endAngle)
         {
@@ -202,7 +195,7 @@ namespace ShapesBalanceXamFormsApp
             bool largeArc = false;
 
             if (endAngle > 180)
-                largeArc = true;    
+                largeArc = true;
 
             pathRoot.StrokeLineCap = PenLineCap.Round;
             pathRoot.StrokeThickness = 12;
@@ -236,14 +229,9 @@ namespace ShapesBalanceXamFormsApp
 
         }
 
-
-
-
-
-        //while(amount.CryptoValue % 1000 = 0)
-
-
-
     }
 }
+
+
+
 
