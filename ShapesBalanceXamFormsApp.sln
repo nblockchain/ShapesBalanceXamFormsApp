@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapesBalanceXamFormsApp.iO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShapesBalanceXamFormsApp", "ShapesBalanceXamFormsApp\ShapesBalanceXamFormsApp.csproj", "{5217D1A5-2F63-4EE5-9652-774BE24B1D00}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{9071B3F7-0D9D-4D31-A573-A9123C0015DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCircle", "TestCircle\TestCircle.csproj", "{846E211B-A094-4A89-AF52-E9C0B240D4C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,9 +60,24 @@ Global
 		{5217D1A5-2F63-4EE5-9652-774BE24B1D00}.Release|iPhone.Build.0 = Release|Any CPU
 		{5217D1A5-2F63-4EE5-9652-774BE24B1D00}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{5217D1A5-2F63-4EE5-9652-774BE24B1D00}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|iPhone.Build.0 = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{846E211B-A094-4A89-AF52-E9C0B240D4C1} = {9071B3F7-0D9D-4D31-A573-A9123C0015DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB878221-4D3D-4A85-B861-92A8D8F72BF2}

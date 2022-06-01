@@ -162,7 +162,7 @@ namespace ShapesBalanceXamFormsApp
                     ArcSegment arcSegment = new ArcSegment();
 
                     gap = 2.5;
-                    //lengthOfArc = setArcSizeAndArcAngle(lengthOfArc, gap, arcAngle, path, pathFigure, arcSegment);
+                    
                     arcAngle = setArcAngle(lengthOfArc, gap, arcAngle, path, pathFigure, arcSegment);
 
 
@@ -192,6 +192,11 @@ namespace ShapesBalanceXamFormsApp
 
         }
 
+        public IEnumerable<Wallet> Normalize(IEnumerable<Wallet> wallets)
+        {
+
+            return wallets;
+        }
         public double setArcAngle(double lengthOfArc, double gap, double arcAngle, Path path, PathFigure pathFigure, ArcSegment arcSegment)
         {
             int lowestNaturalNumber = 1;
