@@ -31,8 +31,8 @@ namespace ShapesBalanceXamFormsApp
 
 
             //yield return new Wallet(50, Brush.Blue);
-            yield return new Wallet(99.5, Brush.Green);
-            yield return new Wallet(0.5, Brush.Brown);
+            yield return new Wallet(98, Brush.Gray);
+            yield return new Wallet(2, Brush.Brown);
 
         }
 
@@ -97,23 +97,24 @@ namespace ShapesBalanceXamFormsApp
 
 
         }
+
+
+
         public void makePies(Grid grid, IEnumerable<Wallet> amounts)
         {
-            double minimumShowablePercentage = 2;
-            double visibilityPercentageLimit = 1;
-            double minimumShowableArc = 360*(minimumShowablePercentage/100);
-            double visibileArcLimit = 360 * (visibilityPercentageLimit / 100);
 
+            int lowestNaturalNumber = 1;
             int n = amounts.Count();
-           
-            double lengthOfArc;
+            double change;
             double arcAngle = 0;
             double total = 0;
 
             //manipulate the gap between the arcs
             double gap;
 
-            //Total Amount
+
+
+
             foreach (Wallet p in amounts)
                 total += p.CryptoValue;
 
@@ -121,7 +122,7 @@ namespace ShapesBalanceXamFormsApp
             {
 
 
-                lengthOfArc = 360;
+                change = 360;
                 gap = 0;
 
                 Path path = new Path { Stroke = amounts.ElementAt(0).Stroke };
@@ -131,7 +132,7 @@ namespace ShapesBalanceXamFormsApp
                 PathSegmentCollection pathSegmentCollection = new PathSegmentCollection();
                 ArcSegment arcSegment = new ArcSegment();
 
-                arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
+                arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, change - gap * 2);
 
 
                 path.Data = geometry;
@@ -148,9 +149,8 @@ namespace ShapesBalanceXamFormsApp
                 {
 
 
-                    lengthOfArc = (amounts.ElementAt(i).CryptoValue * 360) / total;
+                    change = (amounts.ElementAt(i).CryptoValue * 360) / total;
 
-                    
 
                     Path path = new Path { Stroke = amounts.ElementAt(i).Stroke };
                     PathGeometry geometry = new PathGeometry();
@@ -161,49 +161,17 @@ namespace ShapesBalanceXamFormsApp
 
 
                     gap = 2.5;
-                    // visibileArcLimit = 3.2
-                    // minimumShowableArc = 7.2
-                    if(360 >= lengthOfArc && lengthOfArc > 360 - visibileArcLimit)
-                    {
-                        lengthOfArc = 360;
-                        gap = 0;
-                        //arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle - gap, change + gap * 2);
-                        //arcAngle = arcAngle + change;
-                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
 
-                        //arcSegment = renderArc(path, pathFigure, arcSegment, 0 , 0);
+                    if (change > lowestNaturalNumber)
+                    {
+                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, change - gap * 2);
+                        arcAngle = arcAngle + change;
 
                     }
-                    else if(360 - visibileArcLimit >= lengthOfArc && lengthOfArc > 360 - minimumShowableArc )
+                    else
                     {
-                        lengthOfArc = 360 - minimumShowableArc;
-                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
-                        arcAngle = arcAngle + lengthOfArc;
-
-                    }
-                    else    if( 360 - minimumShowableArc >= lengthOfArc && lengthOfArc >= minimumShowableArc)
-                    {
-                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
-                        arcAngle = arcAngle + lengthOfArc;
-
-                    }
-
-                    else if(minimumShowableArc > lengthOfArc && lengthOfArc >= visibileArcLimit)
-                    {
-                        lengthOfArc = minimumShowableArc; //7.2
-
-                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
-                        arcAngle = arcAngle + lengthOfArc;
-                    }
-                    else if(360 >= lengthOfArc && lengthOfArc > 360-visibileArcLimit)
-                    {
-                        lengthOfArc = 360;
-                        gap = 0;
-                        //arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle - gap, change + gap * 2);
-                        //arcAngle = arcAngle + change;
-                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle + gap, lengthOfArc - gap * 2);
-
-                        //arcSegment = renderArc(path, pathFigure, arcSegment, 0 , 0);
+                        arcSegment = renderArc(path, pathFigure, arcSegment, arcAngle - gap, change + gap * 2);
+                        arcAngle = arcAngle + change;
 
                     }
 
@@ -251,6 +219,7 @@ namespace ShapesBalanceXamFormsApp
             return ARC;
 
         }
+
         private Point ComputeCartesianCoordinate(double angle, double radius)
         {
             //center (50,50)
@@ -277,4 +246,5 @@ namespace ShapesBalanceXamFormsApp
 
     }
 }
+
 
